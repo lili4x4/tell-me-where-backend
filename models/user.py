@@ -5,4 +5,4 @@ class User(db.Model):
     username = db.Column(db.String, nullable=False),
     # friends = db.relationship("Friend", back_populates='user'
 
-# #Need to look more into many-to-many relationships
+# Need to look more into many-to-many relationships
