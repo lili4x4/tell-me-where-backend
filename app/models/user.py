@@ -9,7 +9,7 @@ user_to_user = db.Table("user_to_user", db.metadata,
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    username = db.Column(db.String, nullable=False),
+    username = db.Column(db.String, nullable=False)
     friends = db.relationship("User",
                         secondary=user_to_user,
                         primaryjoin=id==user_to_user.c.follower_id,

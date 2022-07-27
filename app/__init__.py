@@ -25,6 +25,8 @@ def create_app(test_config=None):
     migrate.init_app(app, db)
 
     from app.models.user import User
+    from app.models.rec import Rec
+
     # Register Blueprints here
 
 
