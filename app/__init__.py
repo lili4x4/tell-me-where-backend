@@ -2,6 +2,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from dotenv import load_dotenv
+import os
 from flask_cors import CORS
 
 db = SQLAlchemy()
@@ -23,6 +24,7 @@ def create_app(test_config=None):
     db.init_app(app)
     migrate.init_app(app, db)
 
+    from app.models.user import User
     # Register Blueprints here
 
 

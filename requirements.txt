@@ -48,6 +48,7 @@ pylint==2.12.2
 pyparsing==2.4.7
 pytest==6.2.4
 python-dateutil==2.8.2
+python-dotenv==0.20.0
 pyzmq==22.3.0
 requests==2.27.1
 six==1.16.0
