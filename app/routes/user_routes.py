@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify, make_response
 from app import db
-from app.models.user import User
+from app.models.models import User
 from app.helper_functions import success_message_info_as_list, error_message
 
 user_bp = Blueprint('Users', __name__, url_prefix='/users')
@@ -27,4 +27,6 @@ def get_users():
     users = User.query.all()
     users_response = [user.self_to_dict() for user in users]
     return success_message_info_as_list(users_response, status_code=200)
+
+# follow a user
 
