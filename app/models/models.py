@@ -26,10 +26,14 @@ class User(db.Model):
         "username" : True,
     }
 
+    def __repr__(self):
+        return '<User {}>'.format(self.username)
+
     def self_to_dict(self):
             instance_dict = dict(
                 id=self.id,
                 username=self.username,
+                recs=self.recs
             )
 
             friend_list = [friend.self_to_dict() for friend in self.friends] if self.friends else []
@@ -38,8 +42,8 @@ class User(db.Model):
             return instance_dict
 
     def follow(self, user):
-            if not self.is_following(user):
-                self.friends.append(user)
+        # if not self.is_following(user):
+        self.friends.append(user)
 
     def unfollow(self, user):
         if self.is_following(user):
@@ -73,4 +77,48 @@ class Rec(db.Model):
     category2 = db.Column(db.String)
     category3 = db.Column(db.String)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    user = db.relationship('User', secondary=user_rec, backref='rec')
+
+    def __repr__(self):
+        return '<Rec {}>'.format(self.id)
+
+    def self_to_dict(self):
+        instance_dict = dict(
+            id=self.id,
+            restaurant_name=self.restaurant_name,
+            user=self.user.username,
+            yelp_id=self.yelp_id,
+            yelp_url=self.yelp_url,
+            price=self.price,
+            category1=self.category1,
+            category2=self.category2,
+            category3=self.category3,
+            timestamp=self.timestamp,
+        )
+        
+        return instance_dict
+
+    @classmethod
+    def return_class_name(cls):
+        return cls.__name__
+
+    @classmethod
+    def create_from_dict(cls, data_dict):
+        if data_dict.keys() == cls.required_attributes.keys():
+            return cls(username=data_dict["username"])
+        else:
+            remaining_keys= set(data_dict.keys())-set("username")
+            response=list(remaining_keys)
+            raise ValueError(response)
+    
+    required_attributes = {
+        "restaurant_name" : True,
+        "yelp_id" : True,
+
+        # user=self.user.username
+        #     yelp_id=self.yelp_id,
+        #     yelp_url=self.yelp_url,
+        #     price=self.price,
+        #     category1=self.category1
+        #     category2=self.category2
+        #     category3=self.category3
+    }
