@@ -18,13 +18,26 @@ class User(db.Model):
     )
 
 
-def self_to_dict(self):
-        instance_dict = dict(
-            id=self.id,
-            username=self.username,
-        )
+    def self_to_dict(self):
+            instance_dict = dict(
+                id=self.id,
+                username=self.username,
+            )
 
-        friend_list = [friend.self_to_dict() for friend in self.friends] if self.friends else []
-        instance_dict["friends"] = friend_list
-        
-        return instance_dict
+            friend_list = [friend.self_to_dict() for friend in self.friends] if self.friends else []
+            instance_dict["friends"] = friend_list
+            
+            return instance_dict
+
+    def follow(self, user):
+            if not self.is_following(user):
+                self.friends.append(user)
+
+    def unfollow(self, user):
+        if self.is_following(user):
+            self.friends.remove(user)
+
+    def is_following(self, user):
+        return self.friends.filter(
+            followers.c.friend_id == user.id).count() > 0
+
