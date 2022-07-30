@@ -49,6 +49,21 @@ def follow_user_route(id):
 
     return return_database_info_dict("user", user.self_to_dict())
 
+# unfollow a user
+@user_bp.route("/<id>/unfollow", methods=["PATCH"])
+def unfollow_user_route(id):
+    user = get_record_by_id(User, id)
+    request_body = request.get_json()
+
+    friend_id = request_body["id"]
+    friend = get_record_by_id(User, friend_id)
+    
+    user.unfollow(friend)
+    db.session.commit()
+
+    return return_database_info_dict("user", user.self_to_dict())
+
+
 # delete a user
 @user_bp.route("/<id>", methods=["DELETE"])
 def delete_user(id):

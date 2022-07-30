@@ -27,7 +27,27 @@ Seattle = (get_lat_lon('Seattle'))
 Seattle_lat = Seattle[0]['lat']
 Seattle_lon = Seattle[0]['lon']
 
-print(Seattle_lat)
-print(Seattle_lon)
 
-print(get_restaurants(Seattle_lat, Seattle_lon, "Bar Vacilando"))
+yelp_response = get_restaurants(Seattle_lat, Seattle_lon, "The Pink Door")
+
+restaurant_data = yelp_response["businesses"][0]
+
+print(restaurant_data["name"])
+new_restaurant_data = {
+    "name": restaurant_data["name"],
+    "yelp_id": restaurant_data["id"],
+    "image_url": restaurant_data["image_url"],
+    "yelp_url": restaurant_data["url"],
+    "price": restaurant_data["price"],
+}
+
+new_restaurant_data["category1"] = restaurant_data["categories"][0]["title"]
+
+if len(restaurant_data["categories"]) > 1:
+    new_restaurant_data["category2"] = restaurant_data["categories"][1]["title"]
+if len(restaurant_data["categories"]) > 2:
+    new_restaurant_data["category3"] = restaurant_data["categories"][2]["title"]
+
+print(new_restaurant_data)
+
+

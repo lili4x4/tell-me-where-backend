@@ -29,7 +29,7 @@ def two_users_no_followers(app):
         username="Lili Parra"
     )
 
-        new_user_2 = User(
+    new_user_2 = User(
         username="Tyrah Gullette"
     )
 
