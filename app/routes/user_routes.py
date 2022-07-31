@@ -2,7 +2,7 @@ from flask import Blueprint, request, jsonify, make_response
 from app import db
 from app.helper_functions import *
 from app.helper_functions_api import create_rec, create_rec_api_calls
-from app.models.models import User
+from app.models.user_and_rec_models import User, Rec
 
 user_bp = Blueprint('Users', __name__, url_prefix='/users')
 
@@ -79,6 +79,12 @@ def delete_user(id):
 #------------Rec Routes----------#
 ##################################
 
+@user_bp.route("/recs", methods=["GET"])
+def get_recs():
+    recs = Rec.query.all()
+    recs_response = [rec.self_to_dict() for rec in recs]
+    return success_message_info_as_list(recs_response, status_code=200)
+
 @user_bp.route("<id>/recs", methods=["POST"])
 def create_rec_endpoint(id):
     user =  get_record_by_id(User, id)
@@ -86,10 +92,7 @@ def create_rec_endpoint(id):
     location = request_body["location"]
     search = request_body["search"]
 
-    asyncio.run(create_rec_api_calls(location, search, user))
+    create_rec_api_calls(location, search, user)
     
     return success_message_info_as_list(dict(details=f'Request sent'))
-
-
-
 

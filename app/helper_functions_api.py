@@ -1,7 +1,7 @@
 import os
 from dotenv import load_dotenv
 import requests
-from app.models.models import User, Rec
+from app.models.user_and_rec_models import User, Rec
 from app import db
 
 load_dotenv()
@@ -24,17 +24,24 @@ def create_rec(user, restaurant_data):
     if len(restaurant_data["categories"]) > 2:
         new_restaurant_data["category3"] = restaurant_data["categories"][2]["title"]
 
-    new_rec = Rec.create_rec(restaurant_data)
+    new_rec = Rec(
+            restaurant_name=new_restaurant_data["name"],
+            image_url=new_restaurant_data["image_url"],
+            yelp_id=new_restaurant_data["yelp_id"],
+            yelp_url=new_restaurant_data["yelp_url"],
+            price=new_restaurant_data["price"],
+            category1=new_restaurant_data["category1"],
+        )
     db.session.add(new_rec)
     db.session.commit()
-    user.append(new_rec)
+    user.recs.append(new_rec)
 
 
-async def create_rec_api_calls(location, search, user):
-    lat_lon = await get_lat_lon(location)
+def create_rec_api_calls(location, search, user):
+    lat_lon = get_lat_lon(location)
     location_lat = lat_lon[0]['lat']
     location_lon = lat_lon[0]['lon']
-    yelp_response = await get_restaurants(location_lat, location_lon, search)
+    yelp_response = get_restaurants(location_lat, location_lon, search)
     restaurant_data = yelp_response["businesses"][0]
     create_rec(user, restaurant_data)
 

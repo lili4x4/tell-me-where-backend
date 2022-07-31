@@ -22,7 +22,7 @@ class User(db.Model):
                         backref=db.backref('followers', lazy='dynamic'),
                         lazy='dynamic'
     )
-    recs = db.relationship('Rec', secondary=user_rec, backref='user')
+    recs = db.relationship('Rec', secondary=user_rec, backref='User')
 
     required_attributes = {
         "username" : True,
@@ -38,10 +38,17 @@ class User(db.Model):
                 recs=self.recs
             )
 
-            friend_list = [friend.self_to_dict() for friend in self.friends] if self.friends else []
+            friend_list = [friend.friend_to_dict() for friend in self.friends] if self.friends else []
             instance_dict["friends"] = friend_list
             
             return instance_dict
+
+    def friend_to_dict(self):
+        friend_dict = dict(
+            id=self.id,
+            username=self.username,
+        )
+        return friend_dict
 
     def follow(self, user):
         if not self.is_following(user):
@@ -79,6 +86,8 @@ class Rec(db.Model):
     category2 = db.Column(db.String)
     category3 = db.Column(db.String)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    image_url = db.column(db.String)
+    users = db.relationship('User', secondary=user_rec, backref='Rec')
 
     def __repr__(self):
         return '<Rec {}>'.format(self.id)
@@ -87,7 +96,7 @@ class Rec(db.Model):
         instance_dict = dict(
             id=self.id,
             restaurant_name=self.restaurant_name,
-            user=self.user.username,
+            # user=self.user.username,
             image_url=self.image_url,
             yelp_id=self.yelp_id,
             yelp_url=self.yelp_url,
@@ -104,10 +113,16 @@ class Rec(db.Model):
     def return_class_name(cls):
         return cls.__name__
 
-    @classmethod
-    def create_rec(data_dict):
-        return Rec(data_dict)
-
-
+    # @classmethod
+    # def create_rec(data_dict):
+    #     return Rec(
+    #         username=data_dict["username"],
+    #         restaurant_name=data_dict["restaurant_name"],
+    #         image_url=data_dict["image_url"],
+    #         yelp_id=data_dict["yelp_id"],
+    #         yelp_url=data_dict["yelp_url"],
+    #         price=data_dict["price"],
+    #         category1=data_dict["category1"],
+    #     )
 
 
