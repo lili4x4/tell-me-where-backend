@@ -1,7 +1,8 @@
 from flask import Blueprint, request, jsonify, make_response
 from app import db
-from app.models.models import User
 from app.helper_functions import *
+from app.helper_functions_api import create_rec, create_rec_api_calls
+from app.models.models import User
 
 user_bp = Blueprint('Users', __name__, url_prefix='/users')
 
@@ -72,3 +73,23 @@ def delete_user(id):
     db.session.commit()
     
     return success_message_info_as_list(dict(details=f'User {user.id} successfully deleted'))
+
+
+##################################
+#------------Rec Routes----------#
+##################################
+
+@user_bp.route("<id>/recs", methods=["POST"])
+def create_rec_endpoint(id):
+    user =  get_record_by_id(User, id)
+    request_body = request.get_json()
+    location = request_body["location"]
+    search = request_body["search"]
+
+    asyncio.run(create_rec_api_calls(location, search, user))
+    
+    return success_message_info_as_list(dict(details=f'Request sent'))
+
+
+
+

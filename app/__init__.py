@@ -24,8 +24,6 @@ def create_app(test_config=None):
     db.init_app(app)
     migrate.init_app(app, db)
 
-    from app.models.models import User, Rec
-
     # Register Blueprints here
     from .routes.user_routes import user_bp
     app.register_blueprint(user_bp)
