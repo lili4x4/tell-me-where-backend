@@ -31,10 +31,10 @@ def create_rec(user, restaurant_data):
             yelp_url=new_restaurant_data["yelp_url"],
             price=new_restaurant_data["price"],
             category1=new_restaurant_data["category1"],
+            users=[user]
         )
     db.session.add(new_rec)
     db.session.commit()
-    user.recs.append(new_rec)
 
 
 def create_rec_api_calls(location, search, user):

@@ -41,6 +41,9 @@ class User(db.Model):
             friend_list = [friend.friend_to_dict() for friend in self.friends] if self.friends else []
             instance_dict["friends"] = friend_list
             
+            recs_list = [rec.self_to_dict() for rec in self.recs] if self.recs else []
+            instance_dict["recs"] = recs_list
+            
             return instance_dict
 
     def friend_to_dict(self):
@@ -86,7 +89,7 @@ class Rec(db.Model):
     category2 = db.Column(db.String)
     category3 = db.Column(db.String)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    image_url = db.column(db.String)
+    image_url = db.Column(db.String)
     users = db.relationship('User', secondary=user_rec, backref='Rec')
 
     def __repr__(self):
@@ -106,12 +109,23 @@ class Rec(db.Model):
             category3=self.category3,
             timestamp=self.timestamp,
         )
-        
+
+        user_list = [user.friend_to_dict() for user in self.users] if self.users else []
+        instance_dict["users"] = user_list
+
         return instance_dict
 
     @classmethod
     def return_class_name(cls):
         return cls.__name__
+
+    def friend_to_dict(self):
+        user_dict = dict(
+            id=self.id,
+            username=self.username,
+        )
+        return user_dict
+        
 
     # @classmethod
     # def create_rec(data_dict):
