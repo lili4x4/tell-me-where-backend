@@ -27,6 +27,9 @@ def create_app(test_config=None):
     # Register Blueprints here
     from .routes.user_routes import user_bp
     app.register_blueprint(user_bp)
+    
+    from .routes.rec_routes import rec_bp
+    app.register_blueprint(rec_bp)
 
 
     CORS(app)

@@ -11,11 +11,12 @@ yelp_key = os.environ.get("YELP_KEY")
 
 def create_rec(user, restaurant_data):
     new_restaurant_data = {
-        "name": restaurant_data["name"],
+        "restaurant_name": restaurant_data["name"],
         "yelp_id": restaurant_data["id"],
         "image_url": restaurant_data["image_url"],
         "yelp_url": restaurant_data["url"],
         "price": restaurant_data["price"],
+        "users": [user]
     }
 
     new_restaurant_data["category1"] = restaurant_data["categories"][0]["title"]
@@ -24,17 +25,10 @@ def create_rec(user, restaurant_data):
     if len(restaurant_data["categories"]) > 2:
         new_restaurant_data["category3"] = restaurant_data["categories"][2]["title"]
 
-    new_rec = Rec(
-            restaurant_name=new_restaurant_data["name"],
-            image_url=new_restaurant_data["image_url"],
-            yelp_id=new_restaurant_data["yelp_id"],
-            yelp_url=new_restaurant_data["yelp_url"],
-            price=new_restaurant_data["price"],
-            category1=new_restaurant_data["category1"],
-            users=[user]
-        )
+    new_rec = Rec(**new_restaurant_data)
     db.session.add(new_rec)
     db.session.commit()
+    return new_rec
 
 
 def create_rec_api_calls(location, search, user):
@@ -43,7 +37,7 @@ def create_rec_api_calls(location, search, user):
     location_lon = lat_lon[0]['lon']
     yelp_response = get_restaurants(location_lat, location_lon, search)
     restaurant_data = yelp_response["businesses"][0]
-    create_rec(user, restaurant_data)
+    return create_rec(user, restaurant_data)
 
 def get_lat_lon(location):
     response = requests.get(

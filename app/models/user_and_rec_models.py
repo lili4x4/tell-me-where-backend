@@ -99,7 +99,6 @@ class Rec(db.Model):
         instance_dict = dict(
             id=self.id,
             restaurant_name=self.restaurant_name,
-            # user=self.user.username,
             image_url=self.image_url,
             yelp_id=self.yelp_id,
             yelp_url=self.yelp_url,
