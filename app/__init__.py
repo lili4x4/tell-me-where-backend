@@ -4,8 +4,9 @@ from flask_migrate import Migrate
 from dotenv import load_dotenv
 import os
 from flask_cors import CORS
-# from flask_login import LoginManager
-from flask.ext.login import LoginManager
+from flask_login import LoginManager
+
+
 
 
 db = SQLAlchemy()
