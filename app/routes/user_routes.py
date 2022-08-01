@@ -72,3 +72,5 @@ def delete_user(id):
     db.session.commit()
     
     return success_message_info_as_list(dict(details=f'User {user.id} successfully deleted'))
+
+

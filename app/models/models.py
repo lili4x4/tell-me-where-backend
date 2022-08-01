@@ -1,6 +1,8 @@
 from app import db
 from datetime import datetime
 from app.helper_functions_api import *
+from flask_login import UserMixin
+
 
 user_to_user = db.Table("user_to_user", db.metadata,
     db.Column("follower_id", db.Integer, db.ForeignKey("user.id"), primary_key=True),
@@ -12,8 +14,9 @@ user_rec = db.Table('user_rec',
     db.Column('rec_id', db.Integer, db.ForeignKey('rec.id'))
 )
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    email = db.Column(db.String(100), unique=True)
     username = db.Column(db.String, nullable=False)
     friends = db.relationship("User",
                         secondary=user_to_user,
@@ -23,6 +26,7 @@ class User(db.Model):
                         lazy='dynamic'
     )
     recs = db.relationship('Rec', secondary=user_rec, backref='user')
+    password = db.Column(db.String(80), nullable=False)
 
     required_attributes = {
         "username" : True,

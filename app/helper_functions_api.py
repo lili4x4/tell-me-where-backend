@@ -1,6 +1,9 @@
 import os
 from dotenv import load_dotenv
 import requests
+from app.models.models import User
+
+
 
 load_dotenv()
 
@@ -47,6 +50,8 @@ if len(restaurant_data["categories"]) > 1:
     new_restaurant_data["category2"] = restaurant_data["categories"][1]["title"]
 if len(restaurant_data["categories"]) > 2:
     new_restaurant_data["category3"] = restaurant_data["categories"][2]["title"]
+
+User.recs.add(new_restaurant_data['yelp_id'])
 
 print(new_restaurant_data)
 
