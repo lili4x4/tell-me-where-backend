@@ -37,7 +37,7 @@ def get_user_by_id(id):
     return return_database_info_dict("user", user.self_to_dict())
 
 # read one user by username
-@user_bp.route("/usernames", methods=["GET"])
+@user_bp.route("/usernames", methods=["POST"])
 def get_user_by_username():
     request_body = request.get_json()
 
