@@ -29,12 +29,23 @@ def get_users():
     users_response = [user.self_to_dict() for user in users]
     return success_message_info_as_list(users_response, status_code=200)
 
-# read one user
+# read one user by id
 @user_bp.route("/<id>", methods=["GET"])
 def get_user_by_id(id):
     user = get_record_by_id(User, id)
 
     return return_database_info_dict("user", user.self_to_dict())
+
+# read one user by username
+@user_bp.route("/usernames", methods=["GET"])
+def get_user_by_username():
+    request_body = request.get_json()
+
+    username = request_body["username"]
+    user = get_record_by_username(username)
+
+    return return_database_info_dict("user", user.self_to_dict())
+
 
 # follow a user
 @user_bp.route("/<id>/follow", methods=["PATCH"])

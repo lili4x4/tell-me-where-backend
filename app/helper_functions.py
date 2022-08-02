@@ -1,7 +1,5 @@
 from flask import jsonify, abort, make_response
-import os
-import requests
-import asyncio
+from app.models.user_and_rec_models import User
 
 
 def error_message(message, status_code):
@@ -20,6 +18,13 @@ def get_record_by_id(cls, id):
         return record
     else:
         error_message(f"{cls.return_class_name()} id: {id} not found", 404)
+
+def get_record_by_username(username):
+    record = User.query.filter(User.username == username).first()
+    if record:
+        return record
+    else:
+        error_message(f"User {username} not found", 404)
 
 def return_database_info_dict(category, return_value):
     return_dict = {}

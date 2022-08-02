@@ -1,6 +1,5 @@
 from app import db
 from datetime import datetime
-from app.helper_functions_api import *
 
 user_to_user = db.Table("user_to_user", db.metadata,
     db.Column("follower_id", db.Integer, db.ForeignKey("user.id"), primary_key=True),

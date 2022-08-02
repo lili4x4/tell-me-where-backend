@@ -1,8 +1,8 @@
 import os
 from dotenv import load_dotenv
 import requests
-from app.models.user_and_rec_models import User, Rec
 from app import db
+from app.models.user_and_rec_models import Rec
 
 load_dotenv()
 
