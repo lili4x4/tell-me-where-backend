@@ -37,15 +37,16 @@ def get_user_by_id(id):
     return return_database_info_dict("user", user.self_to_dict())
 
 # read one user by username
-@user_bp.route("/usernames", methods=["POST"])
+@user_bp.route("/usernames", methods=["GET"])
 def get_user_by_username():
-    request_body = request.get_json()
-
-    username = request_body["username"]
+    user_query = request.args.get("username")
+    if not user_query:
+        return {"message": "must provide username parameter"}
+    
+    username = user_query
     user = get_record_by_username(username)
 
     return return_database_info_dict("user", user.self_to_dict())
-
 
 # follow a user
 @user_bp.route("/<id>/follow", methods=["PATCH"])
