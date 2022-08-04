@@ -21,8 +21,9 @@ def create_rec(user, restaurant_data):
         "price": restaurant_data.get('price', None),
         "users": [user],
         "location_city": restaurant_data['location']['city'],
-        "location_state": restaurant_data['location']['state']
     }
+    location_data = restaurant_data['location']
+    new_restaurant_data['location_state'] = location_data.get('state', None)
 
     new_restaurant_data["category1"] = restaurant_data["categories"][0]["title"]
     if len(restaurant_data["categories"]) > 1:
