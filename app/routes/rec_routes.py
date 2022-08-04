@@ -12,7 +12,7 @@ def get_recs():
     return success_message_info_as_list(recs_response, status_code=200)
 
 @rec_bp.route("/<id>", methods=["DELETE"])
-def delete_rec():
+def delete_rec(id):
     rec = get_record_by_id(Rec, id)
     db.session.delete(rec)
     db.session.commit()
