@@ -1,4 +1,5 @@
-from flask import Blueprint, request, jsonify, make_response
+from flask import Blueprint, request, jsonify, make_response, session
+from sqlalchemy import JSON, column
 from app import db
 from app.helper_functions import *
 from app.helper_functions_api import create_rec, create_rec_api_calls
@@ -47,6 +48,7 @@ def get_user_by_username():
     user = get_record_by_username(username)
 
     return return_database_info_dict("user", user.self_to_dict())
+
 
 # follow a user
 @user_bp.route("/<id>/follow", methods=["PATCH"])
@@ -101,4 +103,3 @@ def create_rec_endpoint(id):
     new_rec = create_rec_api_calls(location, search, user)
     
     return success_message_info_as_list(dict(rec=new_rec.self_to_dict()), 201)
-
