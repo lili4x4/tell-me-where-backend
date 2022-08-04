@@ -89,6 +89,8 @@ class Rec(db.Model):
     category3 = db.Column(db.String)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     image_url = db.Column(db.String)
+    location_city = db.Column(db.String)
+    location_state = db.Column(db.String)
     users = db.relationship('User', secondary=user_rec, backref='Rec')
 
     def __repr__(self):
@@ -106,6 +108,8 @@ class Rec(db.Model):
             category2=self.category2,
             category3=self.category3,
             timestamp=self.timestamp,
+            location_city=self.location_city,
+            location_state=self.location_state
         )
 
         user_list = [user.friend_to_dict() for user in self.users] if self.users else []

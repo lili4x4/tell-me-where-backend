@@ -1,6 +1,8 @@
 import os
 from dotenv import load_dotenv
+from flask import jsonify
 import requests
+from sqlalchemy import false
 from app import db
 from app.models.user_and_rec_models import Rec
 
@@ -9,14 +11,17 @@ load_dotenv()
 location_key = os.environ.get("LOCATION_KEY")
 yelp_key = os.environ.get("YELP_KEY")
 
+
 def create_rec(user, restaurant_data):
     new_restaurant_data = {
         "restaurant_name": restaurant_data["name"],
         "yelp_id": restaurant_data["id"],
         "image_url": restaurant_data["image_url"],
         "yelp_url": restaurant_data["url"],
-        "price": restaurant_data["price"],
-        "users": [user]
+        "price": restaurant_data.get('price', None),
+        "users": [user],
+        "location_city": restaurant_data['location']['city'],
+        "location_state": restaurant_data['location']['state']
     }
 
     new_restaurant_data["category1"] = restaurant_data["categories"][0]["title"]
