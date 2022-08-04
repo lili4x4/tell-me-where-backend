@@ -21,7 +21,7 @@ class User(db.Model):
                         backref=db.backref('followers', lazy='dynamic'),
                         lazy='dynamic'
     )
-    recs = db.relationship('Rec', secondary=user_rec, backref='User')
+    recs = db.relationship('Rec', secondary=user_rec, back_populates='users')
 
     required_attributes = {
         "username" : True,
@@ -91,7 +91,7 @@ class Rec(db.Model):
     image_url = db.Column(db.String)
     location_city = db.Column(db.String)
     location_state = db.Column(db.String)
-    users = db.relationship('User', secondary=user_rec, backref='Rec')
+    users = db.relationship('User', secondary=user_rec, back_populates='recs')
 
     def __repr__(self):
         return '<Rec {}>'.format(self.id)
