@@ -103,3 +103,15 @@ def create_rec_endpoint(id):
     new_rec = create_rec_api_calls(location, search, user)
     
     return success_message_info_as_list(dict(rec=new_rec.self_to_dict()), 201)
+
+@user_bp.route("<id>/recs", methods=["GET"])
+def get_user_recs(id):
+    user =  get_record_by_id(User, id)
+    request_body = request.get_json()
+    location = request_body["location"]
+    search = request_body["search"]
+
+    new_rec = create_rec_api_calls(location, search, user)
+    
+    return success_message_info_as_list(dict(rec=new_rec.self_to_dict()), 201)
+

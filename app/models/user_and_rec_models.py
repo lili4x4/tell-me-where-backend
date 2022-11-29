@@ -129,16 +129,5 @@ class Rec(db.Model):
         return user_dict
         
 
-    # @classmethod
-    # def create_rec(data_dict):
-    #     return Rec(
-    #         username=data_dict["username"],
-    #         restaurant_name=data_dict["restaurant_name"],
-    #         image_url=data_dict["image_url"],
-    #         yelp_id=data_dict["yelp_id"],
-    #         yelp_url=data_dict["yelp_url"],
-    #         price=data_dict["price"],
-    #         category1=data_dict["category1"],
-    #     )
 
 
